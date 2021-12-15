@@ -1,35 +1,38 @@
+import statistics
 with open('Day10.txt', "r") as file_input:
     strlines = file_input.read().splitlines() 
 
-#Part 1
 def removechunk(line,modif):
-    templine=""
     modif=False
-    newline=line
     brackets = [["(",")"],["[","]"],["{","}"],["<",">"]]
     for bracket in brackets:
         chunk = bracket[0]+bracket[1]
-        while chunk in newline:
-            templine=newline.replace(chunk,"")
-            newline = templine
-            templine=""
+        while chunk in line:
+            line=line.replace(chunk,"")
             modif=True
-    return newline,modif
+    return line,modif
 
-# brack_in = ["(","[","{","<"]
-
-def countillchar(line):
-    brack_out = [[")","]","}",">"],[3,57,1197,25137]]
-    modif = True
-    myline = line
-    illpoint = 0
+brack_out = [[")","]","}",">"],[3,57,1197,25137]]
+brack_in = [["(","[","{","<"],[1,2,3,4]]
+def countillchar(line,part,incompletes_value=[], modif =True,middle ="", illegal =0):
     while modif == True:
-        myline,modif = removechunk(myline,modif)
-    for char in myline:
+        line,modif = removechunk(line,modif)
+    for char in line:
          if char in brack_out[0]:
-             illpoint = brack_out[1][brack_out[0].index(char)]
+             illegal = brack_out[1][brack_out[0].index(char)]
              break
-    return illpoint
+    if part == 1:
+        return illegal
+    elif part ==2 and illegal==0:
+        for char in reversed(line):
+            illegal = illegal*5 + brack_in[1][brack_in[0].index(char)]
+        incompletes_value.append(illegal)
+        middle = statistics.median(incompletes_value)
+        return middle
 
-Sol1 =  sum(countillchar(line) for line in strlines)
-print(Sol1)
+Sol1 =  sum(countillchar(line,1) for line in strlines)
+print("Solution of part 1 is: %d" % Sol1)
+
+for line in strlines:
+    Sol2 = countillchar(line,2)
+print("Solution of part 2 is: %d" % Sol2)
