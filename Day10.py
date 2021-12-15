@@ -31,8 +31,8 @@ def countillchar(line,part,incompletes_value=[], modif =True,middle ="", illegal
         return middle
 
 Sol1 =  sum(countillchar(line,1) for line in strlines)
-print("Solution of part 1 is: %d" % Sol1)
+print(f"Solution of part 1 is: {Sol1}")
 
 for line in strlines:
     Sol2 = countillchar(line,2)
-print("Solution of part 2 is: %d" % Sol2)
+print(f"Solution of part 2 is: {Sol2}")
